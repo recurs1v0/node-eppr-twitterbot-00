@@ -1,0 +1,26 @@
+<!doctype html>
+<title>EPPR Twitter Bot</title>
+<h1 id="h1">Esperando a Twitter</h1>
+<h3 id="contador">Un momento por favor</h3>
+<div id="tweets"></div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('/'),
+      tweets = document.getElementById('tweets');
+      title  = document.getElementById('h1');
+      contador  = document.getElementById('contador');
+      i = 0
+  socket.on('tweet', function (tweet) {
+    i++
+    contador.innerHTML = (i >= 2) ? i+' Tweets' : i+' Tweet';
+    console.log(tweet)
+    title.innerHTML = 'Analizando Twitter'
+      tweets.innerHTML = '>'
+        + '<br><strong>Usuario: </strong>' + tweet.user.screen_name
+        + '<br><strong>Seguidores: </strong>' + tweet.user.followers_count
+        + '<br><strong>Fecha: </strong>' + tweet.created_at
+        + '<br><strong>Mensaje: </strong>' + tweet.text
+        + '<br>------<a target="_blank" href="https://twitter.com/'+tweet.user.screen_name+'/statuses/'+tweet.id_str+'">LINK</a>-----<br>'
+        + tweets.innerHTML;
+  });
+</script>
